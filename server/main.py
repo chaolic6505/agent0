@@ -1,32 +1,38 @@
 from fastapi import FastAPI
-from routers import story, job
-from db.database import create_tables
 from fastapi.middleware.cors import CORSMiddleware
 
-from core.config import settings
+from db.database import init_database
+from routers import story, job, redis
 
-create_tables()
+# Initialize database
+init_database()
 
+# Create FastAPI app
 app = FastAPI(
-    title="StoryTeller",
-    description="A storyteller app",
-    version="0.1.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    title="Auction System",
+    description="A secure, real-time auction system",
+    version="0.1.0"
 )
 
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_credentials=True,
-    allow_origins=settings.ALLOW_ORIGINS,
 )
 
-app.include_router(job.router, prefix=settings.API_PREFIX)
-app.include_router(story.router, prefix=settings.API_PREFIX)
+# Include routers
+app.include_router(job.router, prefix="/api/v1/jobs", tags=["jobs"])
+app.include_router(redis.router, prefix="/api/v1/redis", tags=["redis"])
+app.include_router(story.router, prefix="/api/v1/stories", tags=["stories"])
 
+@app.get("/")
+async def root():
+    """Root endpoint."""
+    return {"message": "Auction System API"}
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run('main:app', host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
