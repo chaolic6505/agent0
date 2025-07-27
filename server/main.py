@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from db.database import init_database
 from routers import story, job, redis
+from graphql_api.router import router as graphql_router
 
 # Initialize database
 init_database()
@@ -24,6 +25,7 @@ app.add_middleware(
 )
 
 # Include routers
+app.include_router(graphql_router, prefix="/graphql", tags=["graphql"])
 app.include_router(job.router, prefix="/api/v1/jobs", tags=["jobs"])
 app.include_router(redis.router, prefix="/api/v1/redis", tags=["redis"])
 app.include_router(story.router, prefix="/api/v1/stories", tags=["stories"])

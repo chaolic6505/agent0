@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgresql://auction_user:auction_pass@postgres:5432/auction_db
+      - DATABASE_URL=postgresql://neondb_owner:npg_azPj3ke2dbOp@ep-lingering-firefly-af0m7bky-pooler.c-2.us-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - REDIS_URL=redis://redis:6379/0
       - DEBUG=true
     depends_on:

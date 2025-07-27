@@ -71,7 +71,7 @@ class Auction(Base):
 
     # Relationships
     current_highest_bid: Mapped[Optional["Bid"]] = relationship("Bid", foreign_keys=[current_highest_bid_id])
-    bids: Mapped[List["Bid"]] = relationship("Bid", back_populates="auction", cascade="all, delete-orphan")
+    bids: Mapped[List["Bid"]] = relationship("Bid", back_populates="auction", foreign_keys="Bid.auction_id", cascade="all, delete-orphan")
     auction_items: Mapped[List["AuctionItem"]] = relationship("AuctionItem", back_populates="auction", cascade="all, delete-orphan")
 
     # Constraints
@@ -160,7 +160,7 @@ class Bid(Base):
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), onupdate=func.now())
 
     # Relationships
-    auction: Mapped["Auction"] = relationship("Auction", back_populates="bids")
+    auction: Mapped["Auction"] = relationship("Auction", back_populates="bids", foreign_keys=[auction_id])
 
     # Constraints
     __table_args__ = (

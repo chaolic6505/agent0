@@ -27,6 +27,13 @@ def get_db() -> Session:
 
 def init_database():
     """Initialize database and create tables."""
+    # Import all models to ensure they're registered with SQLAlchemy
+    from models.user import User
+    from models.story import Story, StoryNode
+    from models.job import StoryJob
+    from models.auction import Auction, Bid, AuctionItem, Category
+
+    # Create all tables
     Base.metadata.create_all(bind=engine)
 
 
