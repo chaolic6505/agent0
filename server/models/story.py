@@ -1,7 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql import func
 from db.database import Base
+from sqlalchemy.sql import func
+from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, JSON
 
 
 class Story(Base):
